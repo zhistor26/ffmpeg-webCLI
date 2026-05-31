@@ -1,6 +1,6 @@
 # ffmpeg.wasm Editor
 
-A browser-based video editor powered by [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm). <b><u>No uploads, no servers -- all processing happens locally</u></b> in your browser using WebAssembly.
+A browser-based video editor powered by [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm). <b><ins>No uploads, no servers -- all processing happens locally</ins></b> in your browser using WebAssembly.
 
 ---
 
