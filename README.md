@@ -139,6 +139,57 @@ Clicking a recipe fills in the arguments and extension fields instantly.
 
 > **Second input file** — the Raw FFmpeg panel includes an optional *Choose file* picker. The selected file is written to ffmpeg's virtual filesystem as `input2.<ext>` and can be referenced in your arguments (e.g. `-i input2.mp3`). Required by the *Replace audio track* recipe.
 
+### ⬛ Pad / Letterbox
+Add coloured bars to bring a video to a specific aspect ratio without cropping or stretching it. The video is scaled down to fit entirely inside the target canvas; empty space is filled with the chosen pad colour.
+
+| Target Ratio | Typical use |
+|---|---|
+| 16:9 | YouTube, TV, most monitors |
+| 9:16 | Instagram / TikTok Reels, Stories |
+| 1:1 | Instagram square feed |
+| 4:3 | Classic TV / legacy formats |
+| 4:5 | Instagram portrait feed |
+| 21:9 | Cinematic / ultrawide |
+
+Pad colors: **Black**, **White**, **Gray**. Re-encodes to H.264/AAC.
+
+### 📊 Normalize Audio
+Bring the perceived loudness of a clip to a broadcast-standard target using ffmpeg's `loudnorm` (EBU R128) filter. Choose a target integrated loudness level:
+
+- **-14 LUFS** — YouTube / Spotify recommended level
+- **-16 LUFS** — Podcasts / Apple Podcasts
+- **-23 LUFS** — Broadcast standard (EBU R128)
+
+The video stream is stream-copied (no re-encode); only the audio is processed.
+
+### 🌀 Denoise
+Reduce video noise with the `hqdn3d` (high-quality 3D denoise) filter, which combines spatial and temporal noise reduction. Three presets:
+
+| Strength | Parameters | Best for |
+|---|---|---|
+| Light | `2:2:3:3` | Mild grain, HDR content |
+| Medium | `4:4:6:6` | Standard noise removal |
+| Heavy | `10:10:15:15` | Heavy noise / low-light footage |
+
+Re-encodes video with H.264; audio is stream-copied.
+
+### ↩️ Boomerang
+Creates the classic boomerang loop effect: the clip plays **forward then immediately in reverse** in a single output file. Uses ffmpeg's `reverse` filter concatenated with the original via the `concat` filter. Trim is respected for the forward segment. Audio is removed (the reverse of audio rarely sounds intentional).
+
+### 🔍 Sharpen / Blur
+Apply a sharpening or blur effect to the entire video.
+
+- **Sharpen** uses the `unsharp` mask filter (luma + chroma):
+  - Light: `unsharp=3:3:0.8:3:3:0`
+  - Medium: `unsharp=5:5:1.5:5:5:0`
+  - Heavy: `unsharp=7:7:3:7:7:0`
+- **Blur** uses the `boxblur` filter:
+  - Light: `boxblur=3:1`
+  - Medium: `boxblur=6:1`
+  - Heavy: `boxblur=12:1`
+
+Video is re-encoded to H.264; audio is stream-copied.
+
 ---
 
 ## How It Works
