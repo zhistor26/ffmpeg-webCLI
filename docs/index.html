@@ -186,6 +186,10 @@
     .raw-example-btn:hover { border-color: var(--accent); background: rgba(99,102,241,.07); }
     .rex-label { font-size: 0.8rem; font-weight: 600; color: var(--text); white-space: nowrap; flex-shrink: 0; }
     .rex-code { font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace; font-size: 0.7rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+    /* ── Raw example "+2nd file" badge ── */
+    .rex-input2-badge { font-size: 0.68rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: rgba(245,158,11,.18); color: var(--warn); white-space: nowrap; flex-shrink: 0; }
+    @keyframes input2-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); } 30% { box-shadow: 0 0 0 3px rgba(245,158,11,.55); } }
+    .input2-highlight { animation: input2-pulse 1s ease; border-radius: 7px; }
   </style>
 </head>
 <body>
@@ -539,8 +543,7 @@
               <div class="rex-list" id="rawExamplesList"><!-- populated by JS --></div>
             </details>
 
-            <div style="margin-bottom:8px">
-              <label class="lbl">Second input file <span style="font-weight:400;color:var(--muted)">(optional &mdash; reference as <code style="color:var(--accent);font-size:.85em">input2.ext</code> in your args)</span></label>
+            <div id="rawInput2Row" style="margin-bottom:8px">
               <div style="display:flex;align-items:center;gap:8px">
                 <button class="btn btn-ghost btn-sm" onclick="document.getElementById('rawInput2').click()">Choose file</button>
                 <span id="rawInput2Name" style="font-size:0.78rem;color:var(--muted)">No file chosen</span>
@@ -942,7 +945,7 @@ const RAW_EXAMPLES = [
   { label: '🌑 Vignette effect',         args: '-vf vignette=PI/4 -c:v libx264 -crf 23 -preset fast -c:a copy',                                                                                                   ext: 'mp4' },
   { label: '🔇 Extract audio as WAV',    args: '-vn -acodec pcm_s16le',                                                                                                                                           ext: 'wav' },
   { label: '🖼 Extract first frame',     args: '-vframes 1',                                                                                                                                                       ext: 'png' },
-  { label: '🎵 Replace audio track',     args: '-i input2.mp3 -map 0:v:0 -map 1:a:0 -shortest -c:v copy -c:a aac',                                                                                                  ext: 'mp4' },
+  { label: '🎵 Replace audio track',     args: '-i input2.mp3 -map 0:v:0 -map 1:a:0 -shortest -c:v copy -c:a aac',  ext: 'mp4', needsInput2: true  },
 ];
 
 function initRawExamples() {
@@ -951,12 +954,21 @@ function initRawExamples() {
     const btn = document.createElement('button');
     btn.className = 'raw-example-btn';
     const preview = ex.args.length > 55 ? ex.args.slice(0, 52) + '\u2026' : ex.args;
-    btn.innerHTML = `<span class="rex-label">${ex.label}</span><code class="rex-code">${preview}</code>`;
+    const badge = ex.needsInput2 ? '<span class="rex-input2-badge">+ 2nd file</span>' : '';
+    btn.innerHTML = `<span class="rex-label">${ex.label}</span>${badge}<code class="rex-code">${preview}</code>`;
     btn.onclick = () => {
       document.getElementById('rawArgs').value = ex.args;
       document.getElementById('rawExt').value  = ex.ext;
       updateRawPreview();
       document.getElementById('rawExamplesPanel').removeAttribute('open');
+      if (ex.needsInput2 && !rawInput2File) {
+        const row = document.getElementById('rawInput2Row');
+        row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        row.classList.remove('input2-highlight');
+        void row.offsetWidth; // force reflow to restart animation
+        row.classList.add('input2-highlight');
+        row.addEventListener('animationend', () => row.classList.remove('input2-highlight'), { once: true });
+      }
     };
     list.appendChild(btn);
   });
