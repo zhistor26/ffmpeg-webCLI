@@ -74,7 +74,7 @@ An **Example Commands** library (collapsible) provides one-click recipes to get 
 
 | Example | What it does |
 |---|---|
-| 🔲 Colour-bar watermark | Semi-transparent `drawbox` stamp in the bottom-right corner |
+| 🔲 Color-bar watermark | Semi-transparent `drawbox` stamp in the bottom-right corner |
 | 🎞 Cap framerate to 24 fps | `fps=24` filter + H.264 re-encode |
 | 🎨 Convert to grayscale | `format=gray` + H.264 re-encode |
 | 🔊 Loudness normalize | `loudnorm` filter, stream-copies video |
