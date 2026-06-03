@@ -228,7 +228,8 @@
   <div class="statusbar">
     <div class="dot" id="statusDot"></div>
     <span id="statusText">ffmpeg not loaded — click "Load ffmpeg" to begin</span>
-    <button class="btn btn-primary ml-auto" id="loadBtn" onclick="loadFFmpeg()"><i class="fas fa-play"></i> Load ffmpeg (~31 MB)</button>
+    <button class="btn btn-success ml-auto" id="installBtn" style="display:none; margin-right:8px;" onclick="installApp()"><i class="fas fa-download"></i> Install App</button>
+    <button class="btn btn-primary" id="loadBtn" onclick="loadFFmpeg()"><i class="fas fa-play"></i> Load ffmpeg (~31 MB)</button>
   </div>
 
   <div class="grid">
@@ -1901,6 +1902,48 @@ function mime(ext) {
 updateTrim();
 initRawExamples();
 
+// ── PWA Install Prompt ─────────────────────────────────────────
+// Capture the beforeinstallprompt event and show install button
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('[PWA] Install prompt available');
+  // Show the install button
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'inline-flex';
+  }
+});
+
+// Handle app installed event
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] App installed');
+  addLog('✅ App installed successfully!', 'ok');
+  deferredPrompt = null;
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'none';
+  }
+});
+
+// Install app function
+function installApp() {
+  if (!deferredPrompt) {
+    console.log('[PWA] Install prompt not available');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('[PWA] User accepted install prompt');
+    } else {
+      console.log('[PWA] User dismissed install prompt');
+    }
+    deferredPrompt = null;
+  });
+}
+
 // ── Service Worker Registration ─────────────────────────────────
 // Register service worker for offline support and caching
 if ('serviceWorker' in navigator) {
@@ -1938,7 +1981,7 @@ if ('serviceWorker' in navigator) {
         console.log('[PWA] Back online');
         addLog('✅ Back online', 'ok');
       });
-      
+
       window.addEventListener('offline', () => {
         console.log('[PWA] Going offline');
         addLog('⚠️ Offline - working with cached resources', 'warn');
