@@ -22,12 +22,12 @@ bibliography: paper.bib
 # Summary
 
 `ffmpeg-webCLI` is a browser-based video editor that runs the full FFmpeg
-binary entirely on the client via WebAssembly [@haas2017]. It requires no installation,
+binary entirely on the client via WebAssembly [@haas2017bringing]. It requires no installation,
 no server, and no account. All processing happens locally; files never leave
 the user's device. After the first load, it works completely offline as an
 installable Progressive Web App (PWA).
 
-![ffmpeg-webCLI interface showing the full operation panel.\label{fig:interface}](features.png)
+![ffmpeg-webCLI interface showing the full operation panel.](features.png)
 
 The tool exposes 30+ video operations through a graphical interface, including
 trim, compress, format conversion, GIF creation, audio extraction, subtitle
@@ -43,8 +43,7 @@ users who know what they want but not the exact syntax.
 FFmpeg is one of the most capable media processing tools ever built. It is
 also inaccessible to most users: it requires terminal fluency, installation
 privileges, and knowledge of flag syntax. Existing browser-based alternatives
-(Kapwing [@kapwing], Clideo [@clideo], Cloudconvert [@cloudconvert]) solve the
-interface problem by uploading files
+(Kapwing, Clideo, Cloudconvert) solve the interface problem by uploading files
 to remote servers. This introduces a privacy tradeoff that is unacceptable for
 a significant class of use cases: medical video, legal recordings, journalistic
 source material, and personal footage. For these cases, the privacy guarantee
@@ -64,10 +63,10 @@ as a PWA and works offline thereafter, removing this barrier entirely.
 # Architecture
 
 The tool is built on `ffmpeg.wasm` [@ffmpegwasm], which compiles FFmpeg to
-WebAssembly via Emscripten [@emscripten]. \autoref{fig:arch} shows the overall
+WebAssembly via Emscripten [@emscripten]. Figure 1 shows the overall
 architecture.
 
-![ffmpeg-webCLI architecture: the WASM binary executes in a Web Worker with no network access. Files are read from and written to the user's device only.\label{fig:arch}](architecture.svg){ height=10cm }
+![Web-CLI architecture: the WASM binary executes in a Web Worker with no network access. Files are read from and written to the user's device only.](architecture.svg)
 
 The key architectural decisions are:
 
@@ -107,7 +106,7 @@ The following operations are available through the graphical interface:
 |:-------------|:-----------|
 | Conversion   | Format convert (MP4, WebM, MKV, MOV, AVI), GIF maker, Audio extraction (MP3, AAC, WAV, OGG, FLAC) |
 | Editing      | Trim, Crop, Rotate/Flip, Resize, Speed change (0.25x–4x), Reverse, Fade in/out |
-| Audio        | Mute, Volume (0–4x), Audio replacement, Mix audio, Loop, Normalize loudness (EBU R128 [@ebur128]) |
+| Audio        | Mute, Volume (0–4x), Audio replacement, Mix audio, Loop, Normalize loudness (EBU R128 [@ebu_r128]) |
 | Enhancement  | Brightness/Contrast/Saturation, Grayscale, Strip metadata |
 | Compositing  | Logo overlay, Picture-in-picture, Side-by-side, Concatenate |
 | Subtitles    | Embed soft subtitle tracks (SRT, VTT, ASS) into MP4 or MKV |
@@ -117,10 +116,10 @@ The following operations are available through the graphical interface:
 
 # Performance
 
-WASM execution is CPU-bound and incurs a mean slowdown of approximately 2-4x
+WASM execution is CPU-bound and incurs a mean slowdown of approximately 2–4x
 relative to native FFmpeg for encoding operations. This is consistent with
-reported WebAssembly overheads [@jangda2019], with codec-heavy encoding sitting
-at the higher end of that range. Stream-copy operations
+reported WebAssembly overheads [@jangda2019], with codec-heavy encoding
+sitting at the higher end of that range. Stream-copy operations
 (trim, metadata strip, subtitle embedding) are I/O-bound and show smaller
 overhead. For clips under five minutes, all operations complete within
 practical timeframes on modern hardware. This tradeoff is acceptable for the
@@ -141,13 +140,13 @@ offline PWA.
   not available in the standard `ffmpeg.wasm` binary.
 - The WASM memory ceiling (~2 GB) limits processing of very large files.
 - No batch processing: files are processed one at a time.
-- Encoding is approximately 2-4x slower than native FFmpeg.
+- Encoding is approximately 2–4x slower than native FFmpeg.
 
 # Acknowledgements
 
 This project is built on `ffmpeg.wasm` by the ffmpegwasm contributors
 [@ffmpegwasm], which is itself built on FFmpeg [@ffmpeg]. The author thanks
 the open source community for contributions, feedback, and the first external
-pull request from \@luispa.
+pull request from @luispa.
 
 # References
