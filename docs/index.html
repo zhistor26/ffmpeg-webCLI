@@ -1586,12 +1586,6 @@ function clearInput() {
 
 // ── Batch mode functions ─────────────────────────────
 function toggleBatchMode() {
-  // Prevent entering batch mode while in stack mode with operations queued
-  if (!batchMode && stackMode && stack.length > 0) {
-    addLog('Cannot enter batch mode while stack mode has operations. Clear stack first.', 'warn');
-    return;
-  }
-  
   batchMode = !batchMode;
   const btn = document.getElementById('batchToggle');
   const queueList = document.getElementById('batchQueueList');
@@ -3486,12 +3480,6 @@ function refreshStackControls() {
 }
 
 function setMode(mode) {
-  // Prevent switching to stack mode while batch mode is active
-  if (mode === 'stack' && batchMode) {
-    addLog('Cannot use stack mode while batch processing is active. Exit batch mode first.', 'warn');
-    return;
-  }
-  
   stackMode = (mode === 'stack');
   document.getElementById('modeSingle').classList.toggle('active', !stackMode);
   document.getElementById('modeStack').classList.toggle('active', stackMode);

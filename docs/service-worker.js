@@ -88,6 +88,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip requests with unsupported schemes for caching (chrome-extension, file, data, blob, etc.)
+  if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
   // Handle local app resources (network-first, fallback to cache)
   if (url.origin === self.location.origin) {
     event.respondWith(
@@ -103,7 +108,11 @@ self.addEventListener('fetch', (event) => {
             
             const responseClone = response.clone();
             caches.open(cache).then((c) => {
-              c.put(request, responseClone);
+              try {
+                c.put(request, responseClone);
+              } catch (err) {
+                console.warn('[SW] Failed to cache request:', request.url, err);
+              }
             });
           }
           return response;
@@ -158,8 +167,12 @@ self.addEventListener('fetch', (event) => {
               if (response && response.status === 200) {
                 const responseClone = response.clone();
                 caches.open(CDN_CACHE).then((cache) => {
-                  cache.put(request, responseClone);
-                  console.log('[SW] Cached CDN resource:', request.url);
+                  try {
+                    cache.put(request, responseClone);
+                    console.log('[SW] Cached CDN resource:', request.url);
+                  } catch (err) {
+                    console.warn('[SW] Failed to cache CDN resource:', request.url, err);
+                  }
                 });
               }
               return response;
@@ -184,7 +197,11 @@ self.addEventListener('fetch', (event) => {
         if (response && response.status === 200) {
           const responseClone = response.clone();
           caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseClone);
+            try {
+              cache.put(request, responseClone);
+            } catch (err) {
+              console.warn('[SW] Failed to cache request:', request.url, err);
+            }
           });
         }
         return response;
