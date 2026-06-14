@@ -2705,12 +2705,16 @@ function updateBatchOutputsDisplay() {
   const previewEl = document.getElementById('batchOutputsPreview');
   const downloadAllBtn = document.getElementById('downloadAllZipBtn');
   
-  if (!wrap) return; // Elements don't exist in this mode
+  if (!wrap || !downloadAllBtn) {
+    console.warn('[Batch] Missing elements: wrap=', wrap, 'downloadAllBtn=', downloadAllBtn);
+    return;
+  }
   
   count.textContent = completed.length;
   
   if (completed.length === 0) {
     wrap.classList.add('hidden');
+    downloadAllBtn.style.display = 'none';
     return;
   }
   
@@ -2726,7 +2730,7 @@ function updateBatchOutputsDisplay() {
   
   // Show preview section and download all button
   previewEl.style.display = 'block';
-  downloadAllBtn.style.display = 'block';
+  downloadAllBtn.style.display = 'inline-block';
   
   // If first item, auto-select it
   if (selectEl.selectedIndex === 0 && completed.length > 0) {
