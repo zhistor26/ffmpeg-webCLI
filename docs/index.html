@@ -2693,6 +2693,7 @@ async function processBatchFile(item) {
   try { await ffmpeg.deleteFile(outName); } catch (_) {}
   
   // Update batch outputs display in Output section
+  console.log('[processBatchFile] Calling updateBatchOutputsDisplay for:', item.file.name);
   updateBatchOutputsDisplay();
 }
 
@@ -2705,6 +2706,8 @@ function updateBatchOutputsDisplay() {
   const previewEl = document.getElementById('batchOutputsPreview');
   const downloadAllBtn = document.getElementById('downloadAllZipBtn');
   
+  console.log('[updateBatchOutputsDisplay] completed:', completed.length, 'wrap:', wrap, 'btn:', downloadAllBtn);
+  
   if (!wrap || !downloadAllBtn) {
     console.warn('[Batch] Missing elements: wrap=', wrap, 'downloadAllBtn=', downloadAllBtn);
     return;
@@ -2713,11 +2716,13 @@ function updateBatchOutputsDisplay() {
   count.textContent = completed.length;
   
   if (completed.length === 0) {
+    console.log('[updateBatchOutputsDisplay] No completed files, hiding');
     wrap.classList.add('hidden');
     downloadAllBtn.style.display = 'none';
     return;
   }
   
+  console.log('[updateBatchOutputsDisplay] Showing batch outputs section');
   wrap.classList.remove('hidden');
   
   // Update dropdown
@@ -2730,7 +2735,11 @@ function updateBatchOutputsDisplay() {
   
   // Show preview section and download all button
   previewEl.style.display = 'block';
+  downloadAllBtn.disabled = false;
   downloadAllBtn.style.display = 'inline-block';
+  downloadAllBtn.style.visibility = 'visible';
+  downloadAllBtn.style.opacity = '1';
+  console.log('[updateBatchOutputsDisplay] Button display set to:', downloadAllBtn.style.display, 'visibility:', downloadAllBtn.style.visibility);
   
   // If first item, auto-select it
   if (selectEl.selectedIndex === 0 && completed.length > 0) {
@@ -2757,9 +2766,26 @@ function selectBatchOutput(batchIdx) {
 }
 
 async function downloadBatchAllAsZip() {
+  console.log('[downloadBatchAllAsZip] Called');
   const completed = batchQueue.filter(item => item.status === 'done');
+  console.log('[downloadBatchAllAsZip] Completed files:', completed.length);
+  
   if (completed.length === 0) {
     addLog('No completed files to download', 'warn');
+    return;
+  }
+  
+  // Check if JSZip is available
+  if (typeof JSZip === 'undefined') {
+    addLog('JSZip library not loaded - cannot create ZIP. Downloading individual files instead.', 'warn');
+    // Fall back to individual downloads
+    for (const item of completed) {
+      const a = document.createElement('a');
+      a.href = await blobToDataURL(item.output);
+      a.download = item.outputName || 'output.mp4';
+      a.click();
+      await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between downloads
+    }
     return;
   }
   
