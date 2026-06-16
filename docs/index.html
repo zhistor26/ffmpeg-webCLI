@@ -98,7 +98,7 @@
     .tl-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
 
     /* ── Op picker ── */
-    .ops-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+    .ops-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
     .op-tile { background: var(--surface2); border: 2px solid var(--border); border-radius: 8px; padding: 9px 10px; cursor: pointer; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--muted); transition: all .15s; }
     .op-tile:hover { border-color: var(--accent); color: var(--accent); }
     .op-tile.active { border-color: var(--accent); background: rgba(99,102,241,.12); color: var(--accent); }
@@ -247,7 +247,7 @@
 
       .trim-row { flex-direction: column; gap: 6px; }
 
-      .ops-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
       .op-tile { padding: 8px 6px; font-size: 0.74rem; }
 
       .form-row { gap: 6px; }
@@ -274,7 +274,7 @@
     }
 
     @media (max-width: 380px) {
-      .ops-grid { grid-template-columns: repeat(3, 1fr); }
+      .ops-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     /* ── Raw FFmpeg example library ── */
