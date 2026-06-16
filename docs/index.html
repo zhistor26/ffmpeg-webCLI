@@ -4295,10 +4295,14 @@ async function confirmAutoCaptionTranscript() {
     
     addLog(`Input file: ${inName}, Output: ${outName}, Format: ${fmt}, Subtitle codec: ${subsCodec}`, 'ok');
     
-    // Reset args like the Embed Subtitles case does
+    // Build ffmpeg args to embed subtitles
+    // Use specific stream mapping to avoid including unsupported data streams (Android files often have metadata streams)
+    // -map 0:v = video from input 0
+    // -map 0:a = audio from input 0
+    // -map 1:s = subtitles from input 1
     const args = [];
     args.push('-i', inName, '-i', 'autogen.srt');
-    args.push('-c:v', 'copy', '-c:a', 'copy', '-c:s', subsCodec, '-map', '0', '-map', '1');
+    args.push('-c:v', 'copy', '-c:a', 'copy', '-c:s', subsCodec, '-map', '0:v', '-map', '0:a', '-map', '1:s');
     args.push(outName);
     
     addLog(`ffmpeg ${args.join(' ')}`, 'ok');
