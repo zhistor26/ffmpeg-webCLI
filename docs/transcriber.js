@@ -73,6 +73,8 @@ export class Transcriber {
       progress_callback: (p) => {
         if (onProgress) onProgress(p);
       },
+      // Cache models locally in IndexedDB for offline use after first download
+      allowLocalModels: true,
     });
     this.loadedModel = repo;
   }
