@@ -140,32 +140,8 @@ lzc-cli project deploy
 - LPK 内嵌层：约 110 KiB（nginx 上游混合分发 + docs.tar.gz）
 - 远程 build 耗时：约 10s（缓存后）～首次数分钟
 
-## 七、网盘对接 v1.1.0（Phase 1 inject）
+## 七、网盘对接（已放弃）
 
-**状态**：已 build + install 验证（2026-06-17，微服 zhistor）
+v1.1.0～v1.3.x 曾尝试 inject / 应用内 `lzc-file-picker` 对接网盘，因 COEP 与客户端 picker 兼容问题未稳定落地。
 
-### 变更摘要
-
-| 文件 | 变更 |
-|---|---|
-| `content/lazycat-injects/lzc-file-chooser-inject.js` | 官方 inject 脚本（随 LPK 分发） |
-| `lzc-build.yml` | 增加 `contentdir: ./content` |
-| `lzc-manifest.yml` | 增加 `injects`（diskRoot、中文双通道文案） |
-| `package.yml` | version → 1.1.0 |
-
-### 验证命令
-
-```powershell
-cd ffmpeg-webCLI/lzc
-lzc-cli project build
-lzc-cli lpk install .\cloud.lazycat.app.ffmpeg-webcli-v1.1.0.lpk
-lzc-cli project info          # Status_Running, v1.1.0
-lzc-cli project exec --release -s app ls /lzcapp/pkg/content/lazycat-injects/
-```
-
-### 浏览器验收（L2～L4）
-
-打开 https://ffmpeg.{box}.heiyu.space → 点选文件应出现「本机 / 懒猫网盘」双通道弹窗。  
-完整用例见 [CASES-NETDISK.md](./CASES-NETDISK.md)、报告见 [TEST-REPORT-NETDISK.md](./TEST-REPORT-NETDISK.md)。
-
-更多方案背景见 [NETDISK.md](./NETDISK.md)、[PRD-NETDISK.md](./PRD-NETDISK.md)。
+**v1.4.0 最终版**：纯本机选文件 / 下载，无 inject、无 `contentdir`、无网盘 UI。详见 `NETDISK.md`（历史记录）。

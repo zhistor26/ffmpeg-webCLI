@@ -8,9 +8,9 @@
  * - CDN resources caching (ffmpeg library, utilities, icons)
  */
 
-const CACHE_NAME = 'ffmpeg-editor-v3';
-const RUNTIME_CACHE = 'ffmpeg-editor-runtime-v3';
-const CDN_CACHE = 'ffmpeg-editor-cdn-v3';
+const CACHE_NAME = 'ffmpeg-editor-v6';
+const RUNTIME_CACHE = 'ffmpeg-editor-runtime-v6';
+const CDN_CACHE = 'ffmpeg-editor-cdn-v6';
 
 const STATIC_ASSETS = [
   '/',

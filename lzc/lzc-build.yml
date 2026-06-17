@@ -3,7 +3,6 @@
 pkgout: ./
 icon: ./icon.png
 manifest: ./lzc-manifest.yml
-contentdir: ./content
 
 images:
   ffmpeg-webcli:

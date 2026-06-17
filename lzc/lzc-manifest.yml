@@ -1,38 +1,13 @@
-usage: |
-  支持从懒猫网盘选择视频/音频/字幕/图片，处理结果可保存回网盘。
-  首次使用需联网下载 ffmpeg.wasm（约 31MB）；PWA 缓存后可离线使用。
-  建议单文件 ≤500MB；超大/4K 可能因浏览器内存不足失败。
-
-application:
-  subdomain: ffmpeg
-  routes:
-    - /=http://web:8080
-  injects:
-    - id: ffmpeg-netdisk-chooser
-      on: browser
-      when:
-        - /*
-      do:
-        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
-          params:
-            diskRoot: /_lzc/files/home
-            locale: auto
-            hooks:
-              fileInput: true
-              fileSystemAccess: true
-            text:
-              zh-CN:
-                openTitle: 打开文件
-                saveTitle: 保存文件
-                openLocal: 从本机选择
-                openLazyCat: 从懒猫网盘选择
-                saveLocal: 保存到本机
-                saveLazyCat: 保存到懒猫网盘
-                cancel: 取消
-              en-US:
-                openLazyCat: Open from LazyCat Drive
-                saveLazyCat: Save to LazyCat Drive
-
-services:
-  web:
-    image: embed:ffmpeg-webcli
+usage: |
+  基于 ffmpeg.wasm 的浏览器本地视频处理工具，NAS 仅托管静态页面，转码算力在用户浏览器本地执行。
+  首次使用需联网下载 ffmpeg.wasm（约 31MB）；PWA 缓存后可离线使用。
+  建议单文件 ≤500MB；超大/4K 可能因浏览器内存不足失败。
+
+application:
+  subdomain: ffmpeg
+  routes:
+    - /=http://web:8080
+
+services:
+  web:
+    image: embed:ffmpeg-webcli

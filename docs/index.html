@@ -1531,19 +1531,24 @@ function handleFileInput(input) {
   input.value = '';  // Reset so same file can be added again
 }
 
+let inputPreviewUrl = null;
+
 async function handleFile(file) {
   if (!file) return;
   inputFile = file;
   inputExt  = file.name.split('.').pop().toLowerCase() || 'mp4';
   
-  // Hide quick download when loading a new file (old output is no longer relevant)
   document.getElementById('quickDownloadWrap').classList.add('hidden');
 
   const vid = document.getElementById('inputVideo');
-  // Use a data: URL instead of blob: URL — avoids ERR_REQUEST_RANGE_NOT_SATISFIABLE.
-  // Skip inline preview for files > 200 MB to avoid excessive memory use.
+  addLog(`Loading ${file.name} (${fmtBytes(file.size)})…`, 'ok');
+  if (inputPreviewUrl) {
+    URL.revokeObjectURL(inputPreviewUrl);
+    inputPreviewUrl = null;
+  }
   if (file.size <= 200 * 1024 * 1024) {
-    vid.src = await blobToDataURL(file);
+    inputPreviewUrl = URL.createObjectURL(file);
+    vid.src = inputPreviewUrl;
   } else {
     vid.src = '';
     addLog(`Preview skipped for large file (${fmtBytes(file.size)}); processing will still work.`, 'ok');
@@ -1578,6 +1583,10 @@ async function handleFile(file) {
 function clearInput() {
   if (batchMode) return;  // Don't clear in batch mode
   inputFile = null;
+  if (inputPreviewUrl) {
+    URL.revokeObjectURL(inputPreviewUrl);
+    inputPreviewUrl = null;
+  }
   document.getElementById('inputVideo').src = '';
   document.getElementById('inputWrap').classList.add('hidden');
   document.getElementById('dropZone').classList.remove('hidden');
@@ -3033,7 +3042,7 @@ async function downloadBatchAllAsZip() {
       a.href = await blobToDataURL(item.output);
       a.download = item.outputName || 'output.mp4';
       a.click();
-      await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between downloads
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
     return;
   }
