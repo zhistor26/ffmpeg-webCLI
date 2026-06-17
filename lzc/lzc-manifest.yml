@@ -1,0 +1,13 @@
+usage: |
+  纯前端视频处理工具：NAS 仅托管静态页面，转码算力在用户浏览器。
+  首次使用需联网下载 ffmpeg.wasm（约 31MB）；PWA 缓存后可离线使用。
+  大文件/4K 受浏览器内存限制（约 2GB WASM 堆）。
+
+application:
+  subdomain: ffmpeg
+  routes:
+    - /=http://web:8080
+
+services:
+  web:
+    image: embed:ffmpeg-webcli

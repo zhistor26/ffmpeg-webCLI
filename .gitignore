@@ -1,0 +1,4 @@
+# lzc-cli ephemeral files at repo root
+/Dockerfile
+/Dockerfile.lzc-inline-backup-*
+/lzc-build-image-context.tar

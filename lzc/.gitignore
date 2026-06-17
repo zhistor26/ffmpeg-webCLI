@@ -1,0 +1,7 @@
+# lzc-cli build artifacts
+.lzc-cli-*/
+.lzc-cli-cache/
+*.lpk
+
+# local only
+.lzccopy/

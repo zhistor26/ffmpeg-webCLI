@@ -1,0 +1,10 @@
+# 在 lzc/ 目录执行：lzc-cli project build
+# docs 更新后手动执行：tar -czf lzc/pack/docs.tar.gz -C docs .
+pkgout: ./
+icon: ./icon.png
+manifest: ./lzc-manifest.yml
+
+images:
+  ffmpeg-webcli:
+    dockerfile: ./images/Dockerfile
+    context: ..

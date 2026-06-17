@@ -1,0 +1,9 @@
+# 日常迭代：lzc-cli project deploy
+pkgout: ./
+icon: ./icon.png
+manifest: ./lzc-manifest.yml
+
+images:
+  ffmpeg-webcli:
+    dockerfile: ./images/Dockerfile
+    context: ..
