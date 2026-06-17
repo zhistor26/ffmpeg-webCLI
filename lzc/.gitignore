@@ -5,3 +5,8 @@
 
 # local only
 .lzccopy/
+
+tests/node_modules/
+test-results-netdisk.json
+tests/e2e-results.json
+tests/case-results.json

@@ -1,0 +1,5 @@
+﻿node_modules/
+e2e-results.json
+.auth/
+playwright-report/
+test-results/
