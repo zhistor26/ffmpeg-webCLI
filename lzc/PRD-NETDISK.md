@@ -4,7 +4,7 @@
 |---|---|
 | **产品** | cloud.lazycat.app.ffmpeg-webcli |
 | **版本** | v1.1.0（网盘能力） |
-| **状态** | 待开发 |
+| **状态** | 已验证（Phase 1 inject） |
 | **上游** | [zhistor26/ffmpeg-webCLI](https://github.com/zhistor26/ffmpeg-webCLI) |
 | **基线** | v1.0.0 LPK 已上架运行（静态 nginx + ffmpeg.wasm） |
 | **作者** | zhistor26 |

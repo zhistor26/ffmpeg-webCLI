@@ -1,14 +1,14 @@
-package: cloud.lazycat.app.ffmpeg-webcli
-version: 1.0.0
-name: FFmpeg 浏览器剪辑
-description: 基于 ffmpeg.wasm 的本地视频处理工具，转码、裁剪、压缩、GIF、字幕等操作均在浏览器内完成，文件不上传服务器。
-locales:
-  zh-CN:
-    name: FFmpeg 浏览器剪辑
-    description: 隐私优先的浏览器视频工具，在微服上部署静态页面，算力在用户浏览器本地执行。
-  en-US:
-    name: FFmpeg Web CLI
-    description: Privacy-first browser video editor powered by ffmpeg.wasm — no server uploads.
-author: zhistor26
-homepage: https://github.com/zhistor26/ffmpeg-webCLI
-license: GPL-3.0
+package: cloud.lazycat.app.ffmpeg-webcli
+version: 1.1.0
+name: FFmpeg 浏览器剪辑
+description: 基于 ffmpeg.wasm 的本地视频处理工具，支持从懒猫网盘选择文件并将处理结果保存回网盘，转码算力在用户浏览器本地执行。
+locales:
+  zh-CN:
+    name: FFmpeg 浏览器剪辑
+    description: 隐私优先的浏览器视频工具，支持懒猫网盘打开/保存，NAS 仅托管静态页面，算力在用户浏览器本地执行。
+  en-US:
+    name: FFmpeg Web CLI
+    description: Privacy-first browser video editor with LazyCat Drive open/save — ffmpeg.wasm runs locally in your browser.
+author: zhistor26
+homepage: https://github.com/zhistor26/ffmpeg-webCLI
+license: GPL-3.0
